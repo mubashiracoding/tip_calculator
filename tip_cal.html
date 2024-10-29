@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Calculator</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: rgb(93, 31, 126);
+            color: rgb(240, 248, 255);
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            box-shadow: 2px 2px;
+        }
+        input {
+            padding: 10px;
+            height: 20px;
+            width: 300px;
+            border: 2px solid black;
+        }
+        input::placeholder {
+            font-size: 15px;
+        }
+        button {
+            font-size: 25px;
+            border-radius: 5px;
+            border: none;
+        }
+        button:hover {
+            color: white;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tip Calculator</h1>
+        <input type="number" placeholder="0.00" id="amount">
+        <div class="btn-container">
+            <h2>Choose Tip</h2>
+            <button class="tip-btn" data-tip="5">5%</button>
+            <button class="tip-btn" data-tip="10">10%</button>
+            <button class="tip-btn" data-tip="15">15%</button>
+            <button class="tip-btn" data-tip="20">20%</button>
+        </div>
+        <div>
+            <h3>Number of People Sharing</h3>
+            <input type="number" id="people" placeholder="1"><br><br>
+            <button id="calculate-btn">Calculate</button>
+            <p id="tip">Tip per person</p>
+        </div>    
+    </div>
+    <script>
+        const calculateBtn = document.querySelector('#calculate-btn');
+        const tipMessage = document.querySelector('#tip');
+        const amountInput = document.getElementById('amount');
+        const peopleInput = document.getElementById('people');
+        let selectedTipPercentage = 0;
+
+        // Event listener for tip percentage buttons
+        document.querySelectorAll('.tip-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                selectedTipPercentage = parseFloat(button.getAttribute('data-tip'));
+                // Reset background for all buttons and highlight the selected one
+                document.querySelectorAll('.tip-btn').forEach(btn => btn.style.backgroundColor = '#eee');
+                button.style.backgroundColor = '#666';
+            });
+        });
+
+        // Calculate button functionality
+        calculateBtn.addEventListener('click', () => {
+            const amount = parseFloat(amountInput.value);
+            const people = parseInt(peopleInput.value);
+
+            // Validate inputs
+            if (!amount || amount <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+            if (!people || people <= 0) {
+                alert("Please enter a valid number of people.");
+                return;
+            }
+            if (!selectedTipPercentage) {
+                alert("Please select a tip percentage.");
+                return;
+            }
+
+            // Calculate tip per person
+            const tipPerPerson = (amount * (selectedTipPercentage / 100)) / people;
+            tipMessage.textContent = `The Tip per person is $${tipPerPerson.toFixed(2)}`;
+        });
+    </script>
+</body>
+</html>
